@@ -1,0 +1,22 @@
+blastp   \
+    -db  ~/Desktop/blastdb/nr \
+    -task blastp-fast -taxidlist ../6656.txids\
+    -outfmt 5 \
+    -evalue 1e-3 \
+    -num_threads 16 \ 
+    -max_target_seqs 20 \
+    -query VectorBase-48_AgambiaePEST_uniq.fasta \
+    -out VectorBase-48_AgambiaePEST_uniq.xml
+    
+# Scan the  protein sequences against the Interpro protein signature databases using InterProScan tool.
+~/Desktop/important_programs/my_interproscan/interproscan-5.52-86.0/interproscan.sh\
+-i VectorBase-48_AgambiaePEST_uniq.fasta  -f XML
+-o  VB-48_AgambiaePEST_IPSresult.xml
+-cpu 16
+    
+# Run Blast2GO on blastp and InterProScan Results
+./blast2go_cli.run -properties cli.prop  -loadfasta Agambiae_48/VectorBase-48_AgambiaePEST_uniq.fasta  \
+-loadblast Agambiae_48/VectorBase-48_AgambiaePEST_uniq.xml  \
+-loadips50 Agambiae_48/VB-48_AgambiaePEST_IPSresult.xml -mapping -annotation -annex \
+-statistics all -saveb2g -savereport -saveseqtable -workspace g-avenir/  \
+-nameprefix bg_Agambiae-48
