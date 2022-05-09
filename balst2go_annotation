@@ -1,3 +1,5 @@
+# pipeline used for blast2go annotation of protei coding genes (fasta file)
+# Author:Dieunel Derilus
 blastp   \
     -db  ~/Desktop/blastdb/nr \
     -task blastp-fast -taxidlist ../6656.txids\
