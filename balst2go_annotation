@@ -2,7 +2,7 @@
 #This pipeline was implemented following the blast2GO commandline mannual https://www.blast2go.com/images/b2g_pdfs/blast2go_cli_manual.pdf
 # Author:Dieunel Derilus
 
-#Blastp of the proteing coding sequences against the arthropoda fraction of the nr NCBI database
+#Blastp of the protein coding sequences against the arthropoda fraction of the nr NCBI database
 blastp   \
     -db  ~/Desktop/blastdb/nr \
     -task blastp-fast -taxidlist ../6656.txids\
