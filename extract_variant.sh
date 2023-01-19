@@ -3,7 +3,6 @@
 #the extraction will be done on the chromosome 2L were the VGSC gene is located
 
 # extract the chromsome "AgamP4_2L"
-AgamP4_2L
 for i in `ls *frq`; do grep 'AgamP4_2L' $i > AgamP4_2L_$i; done
 # extract the SNP corresponding to one variant (ex: snp of the vriant L995S located at the 2422651) in all the samples
 grep -w '2422651' AgamP4_2L_*frq
