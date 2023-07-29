@@ -1,0 +1,12 @@
+#!/bin/bash -l
+# Load the module for the version of blast we will use
+conda activate hisat2
+ml picard
+## Alignment
+hisat2 -x reference/VectorBase-63_AgambiaePEST_Genome \
+-1 ../Man-CFP-Unx_R2_S5_fastp_R1.fastq \
+-2 ../Man-CFP-Unx_R2_S5_fastp_R2.fastq --summary-file Man-CFP-Unx_R2_S5.bam_HISAT2_Summary.txt -p 16 -t | samtools view -bS -q20 > Man-CFP-Unx_R2_S5.bam
+
+
+# sort with picard by coordinate
+java -jar /apps/x86_64/picard/2.23.0/picard.jar SortSam I=Man-CFP-Unx_R2_S5_mq10.bam  O=Man-CFP-Unx_R2_S5_mq10_sorted.bam SORT_ORDER=coordinate
