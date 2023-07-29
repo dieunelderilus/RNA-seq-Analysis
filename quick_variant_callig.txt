@@ -1,0 +1,12 @@
+#this is a quick variant calling  for individual variant genotyping
+#mpileup and variant calling
+samtools mpileup -uf VectorBase-48_AarabiensisDongola_Genome.fasta MP0*_l12_mq10.srt.bam | bcftools call -c > MP_l112.vcf
+
+### compress the vcf file
+gzip -c MP_l112.vcf > MP_l112.vcf.gz
+
+###  index the vcf compressed file
+tabix -p vcf MP_l112.vcf.gz
+
+## statistics
+vcftools --gzvcf MP_l112.vcf.gz  --freq --out MP_l112 --max-alleles 3
