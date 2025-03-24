@@ -1,0 +1,46 @@
+#!/bin/bash
+source /etc/profile
+source ~/.bashrc
+
+#$ -cwd
+
+#$ -m ae
+
+# Run time
+#$ -l h_rt=24:00:00
+
+# How many cpus I need
+#$ -pe smp 8
+
+#$ -l h_vmem=128G
+
+#$ -M qlk5@cdc.gov
+
+#$ -q all.q
+
+# load required modules:wq
+conda activate hisat2:
+ml samtools
+ml fastp
+
+
+# define input files and parameters
+R1=/scicomp/groups/CGH/DPDM/EB/IRVCT/Dieunel_data/Dieunel_analysis/culex_data/MC078_R1_001.fastq.gz
+R2=/scicomp/groups/CGH/DPDM/EB/IRVCT/Dieunel_data/Dieunel_analysis/culex_data/MC078_R1_001.fastq.gz
+SAMPLE_ID=MC078
+REF=../reference/subjunc/Culex-tarsalis_knwr_CONTIGS_CtarK1
+
+#quality filtering with fastp
+fastp --in1 $R1 \
+        --in2 $R2 \
+        --out1 "$SAMPLE_ID"_R1_001_fp.fastq.gz \
+        --out2 "$SAMPLE_ID"_R2_001_fp.fastq.gz \
+        -q 20 -l 50 -h "$SAMPLE_ID"_fp.html -q 20 -l 50 --trim_poly_g --trim_poly_x
+
+# run the alignment with hisat2
+hisat2 -x $REF \
+-1 $R1 \
+-2 $R2 --summary-file "$SAMPLE_ID".bam_HISAT2_Summary.txt -p $NSLOTS -t | samtools view -bS -q10 > "$SAMPLE_ID"_mq10.bam
+
+#sort with samtools
+samtools sort "$SAMPLE_ID"_mq10.bam -o "$SAMPLE_ID"_mq10._srt_.bam -@ 16
